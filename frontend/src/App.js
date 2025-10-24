@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import '@/App.css';
-import Login from '@/pages/Login';
-import Dashboard from '@/pages/Dashboard';
-import Inventory from '@/pages/Inventory';
-import Forecast from '@/pages/Forecast';
-import Delivery from '@/pages/Delivery';
-import VirtualTryOn from '@/pages/VirtualTryOn';
-import Blockchain from '@/pages/Blockchain';
+import Login from '@/pages/Login.jsx';
+import Dashboard from '@/pages/Dashboard.jsx';
+import Inventory from '@/pages/Inventory.jsx';
+import Forecast from '@/pages/Forecast.jsx';
+import Delivery from '@/pages/Delivery.jsx';
+import VirtualTryOn from '@/pages/VirtualTryOn.jsx';
+import Blockchain from '@/pages/Blockchain.jsx';
 
 function App() {
   const [user, setUser] = useState(null);
