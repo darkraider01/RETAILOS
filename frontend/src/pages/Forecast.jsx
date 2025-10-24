@@ -80,7 +80,7 @@ export default function Forecast({ user, onLogout }) {
             <Card className="p-6" data-testid="forecast-chart-card">
               <h3 className="text-xl font-semibold mb-4">7-Day Demand Forecast for {sku}</h3>
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={forecastData}>
+                <ComposedChart data={forecastData}>
                   <defs>
                     <linearGradient id="colorDemand" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
@@ -126,7 +126,7 @@ export default function Forecast({ user, onLogout }) {
                     name="Lower Bound (95% CI)"
                     dot={false}
                   />
-                </AreaChart>
+                </ComposedChart>
               </ResponsiveContainer>
             </Card>
 
