@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +11,7 @@ import { Plus, Package, Edit, ShoppingCart, RotateCcw } from 'lucide-react';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Inventory({ user, onLogout }) {
+export default function Inventory({ user }) {
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -32,10 +31,7 @@ export default function Inventory({ user, onLogout }) {
 
   const fetchInventory = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/inventory`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(`${API}/inventory`);
       setInventory(response.data);
     } catch (error) {
       toast.error('Failed to fetch inventory');
@@ -47,10 +43,7 @@ export default function Inventory({ user, onLogout }) {
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(`${API}/inventory`, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await axios.post(`${API}/inventory`, formData);
       toast.success('Item added successfully');
       setShowAddDialog(false);
       setFormData({
@@ -70,11 +63,9 @@ export default function Inventory({ user, onLogout }) {
 
   const handleUpdateQuantity = async (sku, quantity, action) => {
     try {
-      const token = localStorage.getItem('token');
       await axios.put(
         `${API}/inventory/${sku}`,
-        { quantity, action },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { quantity, action }
       );
       toast.success(`Inventory ${action === 'purchase' ? 'decreased' : 'restocked'}`);
       fetchInventory();
@@ -87,22 +78,19 @@ export default function Inventory({ user, onLogout }) {
 
   if (loading) {
     return (
-      <Layout user={user} onLogout={onLogout}>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-pulse text-lg">Loading inventory...</div>
-        </div>
-      </Layout>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-pulse text-lg">Loading inventory...</div>
+      </div>
     );
   }
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="inventory-container">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800" data-testid="inventory-title">Inventory Management</h1>
-            <p className="text-gray-600 mt-1">Manage your product stock</p>
-          </div>
+    <div className="space-y-6 fade-in" data-testid="inventory-container">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-800" data-testid="inventory-title">Inventory Management</h1>
+          <p className="text-gray-600 mt-1">Manage your product stock</p>
+        </div>
           
           {canManageInventory && (
             <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
@@ -270,6 +258,5 @@ export default function Inventory({ user, onLogout }) {
           </Card>
         )}
       </div>
-    </Layout>
   );
 }

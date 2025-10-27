@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Link2, Package, ShoppingCart, RotateCcw, Shield } from 'lucide-react';
 import { toast } from 'sonner';
@@ -8,7 +7,7 @@ import { toast } from 'sonner';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Blockchain({ user, onLogout }) {
+export default function Blockchain({ user }) {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,10 +17,7 @@ export default function Blockchain({ user, onLogout }) {
 
   const fetchBlockchain = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/blockchain`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(`${API}/blockchain`);
       setTransactions(response.data);
     } catch (error) {
       toast.error('Failed to fetch blockchain data');
@@ -50,21 +46,18 @@ export default function Blockchain({ user, onLogout }) {
 
   if (loading) {
     return (
-      <Layout user={user} onLogout={onLogout}>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-pulse text-lg">Loading blockchain...</div>
-        </div>
-      </Layout>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-pulse text-lg">Loading blockchain...</div>
+      </div>
     );
   }
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="blockchain-container">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800" data-testid="blockchain-title">Blockchain Ledger</h1>
-          <p className="text-gray-600 mt-1">Immutable transaction history for inventory</p>
-        </div>
+    <div className="space-y-6 fade-in" data-testid="blockchain-container">
+      <div>
+        <h1 className="text-4xl font-bold text-gray-800" data-testid="blockchain-title">Blockchain Ledger</h1>
+        <p className="text-gray-600 mt-1">Immutable transaction history for inventory</p>
+      </div>
 
         <Card className="p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200">
           <div className="flex items-start gap-4">
@@ -181,6 +174,5 @@ export default function Blockchain({ user, onLogout }) {
           </div>
         </Card>
       </div>
-    </Layout>
   );
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Package, AlertTriangle, Truck, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -8,7 +7,7 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, L
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Dashboard({ user, onLogout }) {
+export default function Dashboard({ user }) {
   const [stats, setStats] = useState(null);
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,12 +18,9 @@ export default function Dashboard({ user, onLogout }) {
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
-
       const [statsRes, inventoryRes] = await Promise.all([
-        axios.get(`${API}/stats`, { headers }),
-        axios.get(`${API}/inventory`, { headers })
+        axios.get(`${API}/stats`),
+        axios.get(`${API}/inventory`)
       ]);
 
       setStats(statsRes.data);
@@ -56,21 +52,18 @@ export default function Dashboard({ user, onLogout }) {
 
   if (loading) {
     return (
-      <Layout user={user} onLogout={onLogout}>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-pulse text-lg">Loading dashboard...</div>
-        </div>
-      </Layout>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-pulse text-lg">Loading dashboard...</div>
+      </div>
     );
   }
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="dashboard-container">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800" data-testid="dashboard-title">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Welcome back, {user.full_name}</p>
-        </div>
+    <div className="space-y-6 fade-in" data-testid="dashboard-container">
+      <div>
+        <h1 className="text-4xl font-bold text-gray-800" data-testid="dashboard-title">Dashboard</h1>
+        <p className="text-gray-600 mt-1">Welcome back, {user?.full_name}</p>
+      </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -201,6 +194,5 @@ export default function Dashboard({ user, onLogout }) {
           </div>
         </Card>
       </div>
-    </Layout>
   );
 }

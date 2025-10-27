@@ -1,33 +1,30 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { 
-  LayoutDashboard, 
-  Package, 
-  TrendingUp, 
-  Truck, 
-  Camera, 
-  Link2, 
-  LogOut, 
-  Menu, 
-  X 
+import {
+  LayoutDashboard,
+  Package,
+  TrendingUp,
+  Truck,
+  Camera,
+  Link2,
+  Menu,
+  X
 } from 'lucide-react';
+import RoleSelection from '@/components/RoleSelection';
 
-export default function Layout({ children, user, onLogout }) {
+export default function Layout({ children, user, onSelectRole }) {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Inventory', path: '/inventory', icon: Package },
     { name: 'Forecast', path: '/forecast', icon: TrendingUp },
     { name: 'Delivery', path: '/delivery', icon: Truck },
     { name: 'Try-On', path: '/try-on', icon: Camera },
+    { name: 'Blockchain', path: '/blockchain', icon: Link2 },
   ];
-
-  if (['manager', 'supplier'].includes(user?.role)) {
-    navigation.push({ name: 'Blockchain', path: '/blockchain', icon: Link2 });
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -73,17 +70,8 @@ export default function Layout({ children, user, onLogout }) {
                 <p className="text-sm font-semibold text-gray-800" data-testid="user-name">{user.full_name}</p>
                 <p className="text-xs text-gray-500 capitalize">{user.role}</p>
               </div>
-              <Button
-                onClick={onLogout}
-                data-testid="logout-button"
-                variant="outline"
-                size="sm"
-                className="hidden md:flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
-
+              <RoleSelection onSelectRole={onSelectRole} currentRole={user.role} />
+              
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -119,16 +107,9 @@ export default function Layout({ children, user, onLogout }) {
                   </Link>
                 );
               })}
-              <button
-                onClick={() => {
-                  onLogout();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-red-600 hover:bg-red-50 w-full"
-              >
-                <LogOut className="w-5 h-5" />
-                Logout
-              </button>
+              <div className="py-2">
+                <RoleSelection onSelectRole={onSelectRole} currentRole={user.role} />
+              </div>
             </div>
           </div>
         )}

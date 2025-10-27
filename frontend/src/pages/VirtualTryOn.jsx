@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
 import Webcam from 'react-webcam';
-import Layout from '@/components/Layout';
+import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Camera, CameraOff, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
-export default function VirtualTryOn({ user, onLogout }) {
+export default function VirtualTryOn({ user }) {
   const [showWebcam, setShowWebcam] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState('tshirt');
   const webcamRef = useRef(null);
@@ -45,12 +45,11 @@ export default function VirtualTryOn({ user, onLogout }) {
   };
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="try-on-container">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800" data-testid="try-on-title">Virtual Try-On</h1>
-          <p className="text-gray-600 mt-1">See how products look on you using your webcam</p>
-        </div>
+    <div className="space-y-6 fade-in" data-testid="try-on-container">
+      <div>
+        <h1 className="text-4xl font-bold text-gray-800" data-testid="try-on-title">Virtual Try-On</h1>
+        <p className="text-gray-600 mt-1">See how products look on you using your webcam</p>
+      </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Product Selection */}
@@ -194,6 +193,5 @@ export default function VirtualTryOn({ user, onLogout }) {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }

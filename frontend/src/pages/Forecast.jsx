@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +11,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Forecast({ user, onLogout }) {
+export default function Forecast({ user }) {
   const [sku, setSku] = useState('');
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,10 +25,7 @@ export default function Forecast({ user, onLogout }) {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/forecast/${sku}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(`${API}/forecast/${sku}`);
       setForecastData(response.data);
       toast.success('Forecast generated successfully');
     } catch (error) {
@@ -41,12 +37,11 @@ export default function Forecast({ user, onLogout }) {
   };
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="forecast-container">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800" data-testid="forecast-title">AI Demand Forecasting</h1>
-          <p className="text-gray-600 mt-1">Prophet-powered predictions for inventory planning</p>
-        </div>
+    <div className="space-y-6 fade-in" data-testid="forecast-container">
+      <div>
+        <h1 className="text-4xl font-bold text-gray-800" data-testid="forecast-title">AI Demand Forecasting</h1>
+        <p className="text-gray-600 mt-1">Prophet-powered predictions for inventory planning</p>
+      </div>
 
         <Card className="p-6">
           <form onSubmit={handleForecast} className="space-y-4">
@@ -193,6 +188,5 @@ export default function Forecast({ user, onLogout }) {
           </Card>
         )}
       </div>
-    </Layout>
   );
 }

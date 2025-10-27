@@ -65,42 +65,21 @@ A production-ready web application integrating blockchain-based inventory manage
 - **Sonner** - Toast notifications
 
 ### Infrastructure
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
 - **Supervisor** - Process management
 
 ## 📦 Installation & Setup
 
 ### Prerequisites
-- Docker & Docker Compose
 - Node.js 18+ (for local development)
 - Python 3.11+ (for local development)
 
-### Option 1: Docker Deployment (Recommended)
-
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd retail-management-system
-```
-
-2. **Start all services**
-```bash
-docker-compose up -d
-```
-
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8001
-- API Docs: http://localhost:8001/docs
-
-### Option 2: Local Development
+### Local Development
 
 #### Backend Setup
 ```bash
 cd backend
 pip install -r requirements.txt
-uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+uvicorn server:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 #### Frontend Setup
@@ -109,6 +88,7 @@ cd frontend
 yarn install
 yarn start
 ```
+> **Note:** After modifying `frontend/.env`, you might need to restart the frontend application for changes to take effect.
 
 #### MongoDB
 Ensure MongoDB is running locally on port 27017 or update `MONGO_URL` in `backend/.env`
@@ -171,7 +151,7 @@ JWT_SECRET_KEY=your-secret-key-change-in-production
 
 ### Frontend (`.env`)
 ```
-REACT_APP_BACKEND_URL=http://localhost:8001
+REACT_APP_BACKEND_URL=http://localhost:8000
 ```
 
 ## 📊 API Endpoints
@@ -234,7 +214,7 @@ curl -X GET http://localhost:8001/api/forecast/SHIRT-001 \
          │
 ┌────────▼────────┐
 │  FastAPI Server │
-│  (Port 8001)    │
+│  (Port 8000)    │
 └────────┬────────┘
          │
     ┌────┴────┬────────────┐
@@ -262,10 +242,6 @@ curl -X GET http://localhost:8001/api/forecast/SHIRT-001 \
    - Multi-variate predictions
    - External data integration (weather, events)
 
-4. **CI/CD Pipeline**
-   - GitHub Actions workflows
-   - Automated testing
-   - Container registry publishing
 
 5. **Monitoring & Analytics**
    - Prometheus metrics

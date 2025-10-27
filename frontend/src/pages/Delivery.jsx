@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +11,7 @@ import { Truck, MapPin, Clock, Package, Plus } from 'lucide-react';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Delivery({ user, onLogout }) {
+export default function Delivery({ user }) {
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -48,10 +47,7 @@ export default function Delivery({ user, onLogout }) {
 
   const fetchDeliveries = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/delivery`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(`${API}/delivery`);
       setDeliveries(response.data);
     } catch (error) {
       toast.error('Failed to fetch deliveries');
@@ -63,14 +59,12 @@ export default function Delivery({ user, onLogout }) {
   const handleAddDelivery = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
       await axios.post(
         `${API}/delivery`,
         {
           ...formData,
           estimated_delivery: new Date(formData.estimated_delivery).toISOString()
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
       toast.success('Delivery scheduled successfully');
       setShowAddDialog(false);
@@ -108,22 +102,19 @@ export default function Delivery({ user, onLogout }) {
 
   if (loading) {
     return (
-      <Layout user={user} onLogout={onLogout}>
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-pulse text-lg">Loading deliveries...</div>
-        </div>
-      </Layout>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-pulse text-lg">Loading deliveries...</div>
+      </div>
     );
   }
 
   return (
-    <Layout user={user} onLogout={onLogout}>
-      <div className="space-y-6 fade-in" data-testid="delivery-container">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800" data-testid="delivery-title">Delivery Tracking</h1>
-            <p className="text-gray-600 mt-1">Real-time delivery updates via WebSocket</p>
-          </div>
+    <div className="space-y-6 fade-in" data-testid="delivery-container">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-800" data-testid="delivery-title">Delivery Tracking</h1>
+          <p className="text-gray-600 mt-1">Real-time delivery updates via WebSocket</p>
+        </div>
           
           {canManageDelivery && (
             <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
@@ -272,6 +263,5 @@ export default function Delivery({ user, onLogout }) {
           </div>
         </Card>
       </div>
-    </Layout>
   );
 }
