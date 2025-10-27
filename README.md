@@ -25,11 +25,6 @@ A production-ready web application integrating blockchain-based inventory manage
 - Route tracking and ETA display
 - Updates every 10 seconds
 
-### 4. **Role-Based Access Control**
-- JWT authentication
-- Three user roles: Manager, Supplier, Customer
-- Role-specific dashboards and permissions
-- Secure API endpoints
 
 ### 5. **Virtual Try-On**
 - Webcam integration
@@ -52,7 +47,6 @@ A production-ready web application integrating blockchain-based inventory manage
 - **MongoDB** - NoSQL database with Motor async driver
 - **Prophet** - Facebook's time series forecasting library
 - **WebSockets** - Real-time bidirectional communication
-- **JWT** - Secure authentication
 - **Pydantic** - Data validation
 
 ### Frontend
@@ -95,45 +89,39 @@ Ensure MongoDB is running locally on port 27017 or update `MONGO_URL` in `backen
 
 ## 🎯 Usage Guide
 
-### 1. **Create an Account**
-- Navigate to the login page
-- Click "Create Account"
-- Choose your role (Customer, Manager, or Supplier)
-- Register with email and password
-
-### 2. **Explore Dashboard**
+### 1. **Explore Dashboard**
 - View inventory statistics
 - Check low stock alerts
 - Monitor active deliveries
 - See blockchain transaction count
 
-### 3. **Manage Inventory** (Manager/Supplier only)
+### 2. **Manage Inventory**
 - Add new items with SKU, name, price, quantity
 - Set reorder thresholds
 - Perform purchase operations (decrease stock)
 - Restock items (increase stock)
 - All transactions recorded on blockchain
 
-### 4. **Generate Demand Forecast**
+### 3. **Generate Demand Forecast**
 - Enter any SKU
 - Click "Generate Forecast"
 - View 7-day predictions with confidence intervals
 - Use data for inventory planning
 
-### 5. **Track Deliveries**
-- Schedule new deliveries (Manager/Supplier)
+### 4. **Track Deliveries**
+- Schedule new deliveries
 - Monitor real-time status updates
 - View current location and route
 - Check estimated delivery times
 - Automatic WebSocket updates
 
-### 6. **Try Virtual Try-On**
+### 5. **Try Virtual Try-On**
 - Select a product from the list
 - Click "Start Webcam"
 - See product overlay on your video feed
 - Switch between different products
 
-### 7. **View Blockchain** (Manager/Supplier only)
+### 6. **View Blockchain**
 - See complete transaction history
 - Verify cryptographic hashes
 - Check block linkage
@@ -156,10 +144,6 @@ REACT_APP_BACKEND_URL=http://localhost:8000
 
 ## 📊 API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - Create new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
 
 ### Inventory
 - `GET /api/inventory` - List all items
@@ -189,12 +173,6 @@ cd backend
 pytest tests/
 ```
 
-### Test Authentication
-```bash
-curl -X POST http://localhost:8001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"test123","full_name":"Test User","role":"manager"}'
-```
 
 ### Test Forecast Endpoint
 ```bash
